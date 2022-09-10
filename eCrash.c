@@ -73,7 +73,7 @@ static int addThreadToList(char *name, pthread_t thread, int signo, sighandler_t
         return -1;
     }
 
-    DPRINTF(ECRASH_DEBUG_VERBOSE, "Adding thread 0x%08x (%s)\n", (unsigned int)thread, name);
+    DPRINTF(ECRASH_DEBUG_VERBOSE, "Adding thread 0x%p (%s)\n", thread, name);
     node->threadName = strdup(name);
     node->thread = thread;
     node->backtraceSignal = signo;
@@ -100,7 +100,7 @@ static int removeThreadFromList(pthread_t thread)
     ThreadListNode *Probe, *Prev = NULL;
     ThreadListNode *Removed = NULL;
 
-    DPRINTF(ECRASH_DEBUG_VERBOSE, "Removing thread 0x%08x from list . . .\n", (unsigned int)thread);
+    DPRINTF(ECRASH_DEBUG_VERBOSE, "Removing thread 0x%p from list . . .\n", thread);
     pthread_mutex_lock(&ThreadListMutex);
     for (Probe = ThreadList ; Probe != NULL ; Probe = Probe->Next)
     {
@@ -336,7 +336,7 @@ static void createGlobalBacktrace(void)
 
     if (!gbl_params.symbolTable)
     {
-        if (gbl_params.useBacktraceSymbols != FALSE)
+        if (gbl_params.useBacktraceSymbols != false)
         {
             gbl_backtraceSymbols = backtrace_symbols(gbl_backtraceBuffer, gbl_backtraceEntries);
         }
@@ -370,7 +370,7 @@ static void outputGlobalBacktrace(void)
         }
         else
         {
-            if (gbl_backtraceSymbols != FALSE)
+            if (gbl_backtraceSymbols != false)
             {
                 outputPrintf("*      Frame %02d: %s\n", i, gbl_backtraceSymbols[i]);
             }
@@ -414,13 +414,13 @@ static void outputBacktraceThreads(void)
         }
         if (gbl_backtraceDoneFlag)
         {
-            outputPrintf("*  Backtrace of \"%s\" (0x%08x)\n", probe->threadName, (unsigned int)probe->thread);
+            outputPrintf("*  Backtrace of \"%s\" (0x%p)\n", probe->threadName, probe->thread);
             outputGlobalBacktrace();
         }
         else
         {
-            outputPrintf("*  Error: unable to get backtrace of \"%s\" (0x%08x)\n", probe->threadName,
-                         (unsigned int)probe->thread);
+            outputPrintf("*  Error: unable to get backtrace of \"%s\" (0x%p)\n", probe->threadName,
+                         probe->thread);
         }
         outputPrintf("*\n");
     }
@@ -452,7 +452,7 @@ static void crash_handler(int signo)
     outputBacktrace();
     outputPrintf("*\n");
 
-    if (gbl_params.dumpAllThreads != FALSE)
+    if (gbl_params.dumpAllThreads != false)
     {
         outputBacktraceThreads();
     }

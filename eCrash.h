@@ -11,16 +11,11 @@
 
 #include <stdio.h>
 #include <signal.h>
+#include <stdbool.h>
 
 typedef void (*sighandler_t)(int);
 
 #define MAX_LINE_LEN 256
-
-#ifndef TRUE
-#define TRUE 1
-#define FALSE 0
-#define BOOL int
-#endif
 
 #define ECRASH_DEFAULT_STACK_DEPTH 10
 #define ECRASH_DEFAULT_BACKTRACE_SIGNAL SIGUSR2
@@ -90,7 +85,7 @@ typedef struct
     int debugLevel;
 
     /*** If true, all registered threads will be dumped */
-    BOOL dumpAllThreads;
+    bool dumpAllThreads;
 
     /*** How far to backtrace each stack */
     unsigned int maxStackDepth;
@@ -105,7 +100,7 @@ typedef struct
      * If this is non-zero, the dangerous function, backtrace_symbols will be used. That function does a
      * malloc(), so is not async signal safe, and could cause deadlocks.
      */
-    BOOL useBacktraceSymbols;
+    bool useBacktraceSymbols;
 
     /***
      * To avoid the issues with backtrace_symbols (see comments above) the caller can supply it's own symbol

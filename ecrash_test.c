@@ -294,7 +294,7 @@ int main(int argc, char *argv[])
     {
         params.debugLevel = ECRASH_DEBUG_VERBOSE;
     }
-    params.dumpAllThreads = TRUE;
+    params.dumpAllThreads = true;
     params.useBacktraceSymbols = unsafeBacktrace;
     if (useSymbolTable)
     {
